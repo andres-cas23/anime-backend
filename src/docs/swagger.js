@@ -10,10 +10,14 @@ const options = {
       description: 'API REST para consultar personajes de Saint Seiya, Hunter x Hunter y One Piece',
     },
     servers: [
-      { 
-        url: 'http://localhost:3000', 
-        description: 'Servidor local' 
-      },
+  { 
+    url: 'http://localhost:3000', 
+    description: 'Servidor local' 
+  },
+  { 
+    url: 'https://anime-backend-production-016f.up.railway.app', 
+    description: 'Produccion Railway' 
+  },
     ],
     tags: [
       { name: 'Animes', description: 'Operaciones con animes' },
