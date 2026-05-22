@@ -15,9 +15,9 @@ const options = {
         description: 'Servidor local' 
       },
       { 
-        url: 'https://anime-backend-production-016f.up.railway.app/api', 
-        description: 'Produccion Railway' 
-      },
+  url: 'https://anime-backend-pnf2.onrender.com/api', 
+  description: 'Produccion Render' 
+},
     ],
     tags: [
       { name: 'Auth', description: 'Autenticación de usuarios' },
