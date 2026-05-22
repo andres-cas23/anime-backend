@@ -1,46 +1,30 @@
 const express = require('express');
 const router = express.Router();
-const { listar, obtenerPorCategoria, crear, actualizar, eliminar } = require('../controllers/animesController');
+const { listar, crear, actualizar, eliminar } = require('../controllers/categoriasController');
 const { verificarToken } = require('../middlewares/auth');
 
 /**
  * @swagger
- * /animes:
+ * /categorias:
  *   get:
- *     summary: Listar todos los animes
- *     tags: [Animes]
- *     responses:
- *       200:
- *         description: Lista de animes
- */
-router.get('/', listar);
-
-/**
- * @swagger
- * /animes/categoria/{categoria_id}:
- *   get:
- *     summary: Listar animes por categoría
- *     tags: [Animes]
+ *     summary: Listar todas las categorías
+ *     tags: [Categorias]
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: categoria_id
- *         required: true
- *         schema:
- *           type: integer
  *     responses:
  *       200:
- *         description: Lista de animes por categoría
+ *         description: Lista de categorías
+ *       401:
+ *         description: Token requerido
  */
-router.get('/categoria/:categoria_id', verificarToken, obtenerPorCategoria);
+router.get('/', verificarToken, listar);
 
 /**
  * @swagger
- * /animes:
+ * /categorias:
  *   post:
- *     summary: Crear un nuevo anime
- *     tags: [Animes]
+ *     summary: Crear una nueva categoría
+ *     tags: [Categorias]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -54,20 +38,20 @@ router.get('/categoria/:categoria_id', verificarToken, obtenerPorCategoria);
  *                 type: string
  *               descripcion:
  *                 type: string
- *               categoria_id:
- *                 type: integer
  *     responses:
  *       201:
- *         description: Anime creado correctamente
+ *         description: Categoría creada correctamente
+ *       401:
+ *         description: Token requerido
  */
 router.post('/', verificarToken, crear);
 
 /**
  * @swagger
- * /animes/{id}:
+ * /categorias/{id}:
  *   put:
- *     summary: Actualizar un anime
- *     tags: [Animes]
+ *     summary: Actualizar una categoría
+ *     tags: [Categorias]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -87,20 +71,22 @@ router.post('/', verificarToken, crear);
  *                 type: string
  *               descripcion:
  *                 type: string
- *               categoria_id:
- *                 type: integer
  *     responses:
  *       200:
- *         description: Anime actualizado
+ *         description: Categoría actualizada
+ *       401:
+ *         description: Token requerido
+ *       404:
+ *         description: Categoría no encontrada
  */
 router.put('/:id', verificarToken, actualizar);
 
 /**
  * @swagger
- * /animes/{id}:
+ * /categorias/{id}:
  *   delete:
- *     summary: Eliminar un anime
- *     tags: [Animes]
+ *     summary: Eliminar una categoría
+ *     tags: [Categorias]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -111,7 +97,9 @@ router.put('/:id', verificarToken, actualizar);
  *           type: integer
  *     responses:
  *       200:
- *         description: Anime eliminado
+ *         description: Categoría eliminada
+ *       401:
+ *         description: Token requerido
  */
 router.delete('/:id', verificarToken, eliminar);
 

@@ -9,7 +9,6 @@ const getPersonajes = async (req, res) => {
       .order('id');
 
     if (error) throw error;
-
     res.json({ success: true, data });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -135,9 +134,91 @@ const getImagenesByPersonaje = async (req, res) => {
   }
 };
 
+// POST /personajes — crear personaje con imágenes
+const crearPersonaje = async (req, res) => {
+  try {
+    const { nombre, edad, poder, anime_id, imagenes } = req.body;
+
+    if (!nombre || !anime_id) {
+      return res.status(400).json({ error: 'Nombre y anime_id son requeridos' });
+    }
+
+    const { data: personaje, error: pError } = await supabase
+      .from('personajes')
+      .insert([{ nombre, edad, poder, anime_id }])
+      .select()
+      .single();
+
+    if (pError) throw pError;
+
+    if (imagenes && imagenes.length > 0) {
+      const imagenesData = imagenes.map((url, index) => ({
+        personaje_id: personaje.id,
+        url,
+        orden: index + 1
+      }));
+
+      const { error: iError } = await supabase
+        .from('imagenes')
+        .insert(imagenesData);
+
+      if (iError) throw iError;
+    }
+
+    res.status(201).json({ success: true, data: personaje });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+// PUT /personajes/:id — actualizar personaje
+const actualizarPersonaje = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nombre, edad, poder, anime_id } = req.body;
+
+    const { data, error } = await supabase
+      .from('personajes')
+      .update({ nombre, edad, poder, anime_id })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    if (!data) return res.status(404).json({ error: 'Personaje no encontrado' });
+
+    res.json({ success: true, data });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+// DELETE /personajes/:id — eliminar personaje
+const eliminarPersonaje = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await supabase.from('imagenes').delete().eq('personaje_id', id);
+
+    const { error } = await supabase
+      .from('personajes')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+
+    res.json({ success: true, mensaje: 'Personaje eliminado correctamente' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 module.exports = { 
   getPersonajes, 
   getPersonajeByNombre, 
   getPersonajesByAnime, 
-  getImagenesByPersonaje 
+  getImagenesByPersonaje,
+  crearPersonaje,
+  actualizarPersonaje,
+  eliminarPersonaje
 };

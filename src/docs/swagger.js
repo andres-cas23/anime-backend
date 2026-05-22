@@ -10,19 +10,30 @@ const options = {
       description: 'API REST para consultar personajes de Saint Seiya, Hunter x Hunter y One Piece',
     },
     servers: [
-  { 
-    url: 'http://localhost:3000', 
-    description: 'Servidor local' 
-  },
-  { 
-    url: 'https://anime-backend-production-016f.up.railway.app', 
-    description: 'Produccion Railway' 
-  },
+      { 
+        url: 'http://localhost:3000/api', 
+        description: 'Servidor local' 
+      },
+      { 
+        url: 'https://anime-backend-production-016f.up.railway.app/api', 
+        description: 'Produccion Railway' 
+      },
     ],
     tags: [
+      { name: 'Auth', description: 'Autenticación de usuarios' },
+      { name: 'Categorias', description: 'Operaciones con categorías de anime' },
       { name: 'Animes', description: 'Operaciones con animes' },
       { name: 'Personajes', description: 'Operaciones con personajes' },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
   },
   apis: ['./src/routes/*.js'],
 };

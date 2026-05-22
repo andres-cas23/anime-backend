@@ -16,6 +16,8 @@ app.use(express.json());
 setupSwagger(app);
 
 // Routes
+app.use('/api/auth', require('./src/routes/auth'));
+app.use('/api/categorias', require('./src/routes/categorias'));
 app.use('/api/animes', require('./src/routes/animes'));
 app.use('/api/personajes', require('./src/routes/personajes'));
 
@@ -25,6 +27,8 @@ app.get('/', (req, res) => {
     status: 'ok', 
     message: '🎌 Anime API running!',
     endpoints: {
+      auth: '/api/auth',
+      categorias: '/api/categorias',
       animes: '/api/animes',
       personajes: '/api/personajes',
       swagger: '/api-docs'
