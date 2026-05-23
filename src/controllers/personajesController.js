@@ -1,4 +1,4 @@
-const supabase = require('../config/supabase');
+const supabase = require('../config/database');
 
 // GET /personajes — todos
 const getPersonajes = async (req, res) => {
